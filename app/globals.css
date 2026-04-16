@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: #0A0A0A;
+  --color-ink-light: #111111;
+  --color-electric: #00A3FF;
+  --color-electric-dark: #0077FF;
+  --color-chrome: #E8E8E8;
+  --color-chrome-dim: #A0A0A0;
+}
+
+.chrome-text {
+  background: linear-gradient(180deg, #FFFFFF 0%, #E8E8E8 50%, #A0A0A0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+body {
+  background-color: #0A0A0A;
+  color: #F5F5F5;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-oswald), system-ui, sans-serif;
+}
+
+:focus-visible {
+  outline: 2px solid #00A3FF;
+  outline-offset: 2px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
