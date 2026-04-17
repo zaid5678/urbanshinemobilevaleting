@@ -111,7 +111,7 @@ export default function Footer() {
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
                   <WhatsAppIcon size={16} />
-                  WhatsApp Us
+                  07716 087619
                 </a>
               </li>
               <li>
