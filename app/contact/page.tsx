@@ -67,23 +67,29 @@ export default function ContactPage() {
     setSubmitError(null);
 
     try {
-      const body = new URLSearchParams({
-        "form-name": "contact",
-        name: form.name,
-        phone: form.phone,
-        vehicle: form.vehicle,
-        service: form.service,
-        date: form.date,
-        message: form.message,
-      });
-
-      const res = await fetch("/", {
+      // Formsubmit.co — no account needed. Replace the email below with the
+      // inbox you want enquiries delivered to, then visit that URL once to
+      // confirm the address the first time a submission arrives.
+      const res = await fetch("https://formsubmit.co/ajax/urbanshinevaleting@gmail.com", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: body.toString(),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          vehicle: form.vehicle,
+          service: form.service,
+          preferred_date: form.date,
+          message: form.message || "(none)",
+          _subject: `New enquiry from ${form.name} — UrbanShine`,
+          _captcha: "false",
+        }),
       });
 
-      if (!res.ok) throw new Error("Submission failed");
+      const data = await res.json();
+      if (!res.ok || data.success === "false") throw new Error("Submission failed");
       setSubmitted(true);
     } catch {
       setSubmitError(
@@ -286,15 +292,11 @@ export default function ContactPage() {
               </div>
             ) : (
               /* ── FORM ── */
-              /* data-netlify captures submissions — configure email alerts in your Netlify dashboard under Forms */
               <form
-                name="contact"
-                data-netlify="true"
                 onSubmit={handleSubmit}
                 className="flex flex-col gap-5"
                 noValidate
               >
-                <input type="hidden" name="form-name" value="contact" />
 
                 <div>
                   <label htmlFor="name" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
