@@ -12,6 +12,14 @@ function InstagramIcon({ size = 16 }: { size?: number }) {
   );
 }
 
+function TikTokIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9a8.18 8.18 0 0 0 4.78 1.52V7.06a4.85 4.85 0 0 1-1.01-.37z" />
+    </svg>
+  );
+}
+
 const quickLinks = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
@@ -41,7 +49,7 @@ export default function Footer() {
               London&apos;s mobile car valeting specialists.
             </p>
             <p className="text-[#606060] text-xs mt-2" style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-              © 2025 UrbanShine Mobile Valeting. All rights reserved.
+              © 2026 UrbanShine Mobile Valeting. All rights reserved.
             </p>
           </div>
 
@@ -98,6 +106,18 @@ export default function Footer() {
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
                   <InstagramIcon size={16} />
+                  @urbanshine_mobile_valeting
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.tiktok.com/@urbanshine_mobile_valeting"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-[#A0A0A0] hover:text-[#00A3FF] text-sm transition-colors duration-200"
+                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                >
+                  <TikTokIcon size={16} />
                   @urbanshine_mobile_valeting
                 </a>
               </li>

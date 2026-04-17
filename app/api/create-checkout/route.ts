@@ -1,31 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-// Initialise Stripe lazily so the build doesn't fail without a real key.
-// Set STRIPE_SECRET_KEY in your Netlify environment variables.
 function getStripe() {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) throw new Error("STRIPE_SECRET_KEY is not set");
   return new Stripe(key);
 }
 
-export interface CheckoutPayload {
+interface CheckoutLineItem {
   name: string;
   description: string;
   /** Unit price in pence (GBP) */
   unitAmount: number;
   quantity: number;
-  /** Absolute URL of the product image */
   imageUrl?: string;
+}
+
+export interface CheckoutPayload {
+  items: CheckoutLineItem[];
 }
 
 export async function POST(req: NextRequest) {
   try {
     const body: CheckoutPayload = await req.json();
-    const { name, description, unitAmount, quantity, imageUrl } = body;
 
-    if (!name || !unitAmount || !quantity) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (!body.items || body.items.length === 0) {
+      return NextResponse.json({ error: "No items provided" }, { status: 400 });
     }
 
     const stripe = getStripe();
@@ -36,22 +36,19 @@ export async function POST(req: NextRequest) {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      line_items: [
-        {
-          price_data: {
-            currency: "gbp",
-            product_data: {
-              name,
-              description,
-              ...(imageUrl ? { images: [imageUrl] } : {}),
-            },
-            unit_amount: unitAmount,
+      line_items: body.items.map((item) => ({
+        price_data: {
+          currency: "gbp",
+          product_data: {
+            name: item.name,
+            description: item.description,
+            ...(item.imageUrl ? { images: [item.imageUrl] } : {}),
           },
-          quantity,
+          unit_amount: item.unitAmount,
         },
-      ],
+        quantity: item.quantity,
+      })),
       mode: "payment",
-      // Shipping details collected at Stripe checkout — remove if digital product
       shipping_address_collection: {
         allowed_countries: ["GB"],
       },

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import BuyButton from "@/components/BuyButton";
+import AddToCartButton from "@/components/AddToCartButton";
 import { ShoppingCart } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -171,7 +171,7 @@ export default function ShopPage() {
                   >
                     {product.unit}
                   </span>
-                  <BuyButton product={product} />
+                  <AddToCartButton product={product} />
                 </div>
               </div>
             </div>

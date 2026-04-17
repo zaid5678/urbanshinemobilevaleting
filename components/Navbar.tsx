@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
+import { useCart } from "./CartContext";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -18,6 +19,7 @@ const navLinks = [
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { itemCount, openCart } = useCart();
 
   useEffect(() => {
     if (menuOpen) {
@@ -65,6 +67,21 @@ export default function Navbar() {
                   />
                 </Link>
               ))}
+
+              {/* Cart button */}
+              <button
+                onClick={openCart}
+                className="relative text-[#E8E8E8] hover:text-white transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label={`Open cart${itemCount > 0 ? ` — ${itemCount} item${itemCount !== 1 ? "s" : ""}` : ""}`}
+              >
+                <ShoppingCart size={20} />
+                {itemCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-[#00A3FF] text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
+
               <Link
                 href="/contact"
                 className="bg-[#00A3FF] text-white text-sm font-semibold tracking-widest uppercase px-5 py-2 rounded transition-all duration-200 hover:bg-[#0077FF] hover:shadow-[0_0_18px_rgba(0,163,255,0.5)]"
@@ -74,15 +91,29 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Mobile hamburger */}
-            <button
-              className="md:hidden text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-            >
-              {menuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            {/* Mobile right side */}
+            <div className="md:hidden flex items-center gap-2">
+              <button
+                onClick={openCart}
+                className="relative text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label={`Open cart${itemCount > 0 ? ` — ${itemCount} items` : ""}`}
+              >
+                <ShoppingCart size={20} />
+                {itemCount > 0 && (
+                  <span className="absolute top-1 right-1 bg-[#00A3FF] text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
+              <button
+                className="text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={menuOpen}
+              >
+                {menuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
       </nav>

@@ -20,11 +20,13 @@ export default function BuyButton({ product }: { product: Product }) {
 
     try {
       const payload: CheckoutPayload = {
-        name: product.name,
-        description: product.description,
-        unitAmount: product.price,
-        quantity: 1,
-        imageUrl: product.imageUrl,
+        items: [{
+          name: product.name,
+          description: product.description,
+          unitAmount: product.price,
+          quantity: 1,
+          imageUrl: product.imageUrl,
+        }],
       };
 
       const res = await fetch("/api/create-checkout", {

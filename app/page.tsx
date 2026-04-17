@@ -85,15 +85,13 @@ export default function HomePage() {
             We come to your home or workplace — you don&apos;t lift a finger.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a
-              href={`${WHATSAPP_BASE}?text=${BOOK_MSG}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/contact"
               className="bg-[#00A3FF] text-white font-semibold tracking-wide uppercase px-8 py-4 rounded text-sm transition-all duration-200 hover:bg-[#0077FF] hover:shadow-[0_0_24px_rgba(0,163,255,0.5)] min-w-[200px] text-center"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
-              Book on WhatsApp
-            </a>
+              Get a Quote
+            </Link>
             <Link
               href="/services"
               className="border border-[#00A3FF] text-[#00A3FF] font-semibold tracking-wide uppercase px-8 py-4 rounded text-sm transition-all duration-200 hover:bg-[#00A3FF]/10 min-w-[200px] text-center"

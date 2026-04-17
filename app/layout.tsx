@@ -3,6 +3,7 @@ import { Oswald, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CartProvider from "@/components/CartContext";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -42,10 +43,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
   },
-  icons: {
-    // TODO: replace with a proper 32x32 favicon.ico generated from the logo
-    icon: "/logo.jpg",
-  },
+  // favicon is served from app/icon.jpg — Next.js detects it automatically
 };
 
 export default function RootLayout({
@@ -56,9 +54,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${oswald.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col bg-[#0A0A0A] text-[#F5F5F5] antialiased">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <CartProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

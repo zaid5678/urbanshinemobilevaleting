@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { MessageCircle, MapPin, Clock, Send } from "lucide-react";
+import { MessageCircle, MapPin, Clock, Mail, CheckCircle2 } from "lucide-react";
 
 function InstagramIcon({ size = 20 }: { size?: number }) {
   return (
@@ -46,6 +46,9 @@ const initialState: FormState = {
 export default function ContactPage() {
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Partial<FormState>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function validate(): boolean {
     const newErrors: Partial<FormState> = {};
@@ -57,24 +60,45 @@ export default function ContactPage() {
     return Object.keys(newErrors).length === 0;
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!validate()) return;
+    setSubmitting(true);
+    setSubmitError(null);
 
-    const lines = [
-      `Hi UrbanShine, I'd like to get a quote / book a valet.`,
-      ``,
-      `Name: ${form.name}`,
-      `Phone: ${form.phone}`,
-      `Vehicle: ${form.vehicle}`,
-      `Service: ${form.service}`,
-      form.date ? `Preferred date: ${form.date}` : null,
-      form.message ? `Message: ${form.message}` : null,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    try {
+      const body = new URLSearchParams({
+        "form-name": "contact",
+        name: form.name,
+        phone: form.phone,
+        vehicle: form.vehicle,
+        service: form.service,
+        date: form.date,
+        message: form.message,
+      });
 
-    window.open(`${WHATSAPP_BASE}?text=${encodeURIComponent(lines)}`, "_blank", "noopener,noreferrer");
+      const res = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString(),
+      });
+
+      if (!res.ok) throw new Error("Submission failed");
+      setSubmitted(true);
+    } catch {
+      setSubmitError(
+        "Something went wrong. Please try again or message us directly on WhatsApp."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  function handleReset() {
+    setForm(initialState);
+    setSubmitted(false);
+    setSubmitError(null);
+    setErrors({});
   }
 
   function field(name: keyof FormState, value: string) {
@@ -153,7 +177,7 @@ export default function ContactPage() {
                   rel="noopener noreferrer"
                   className="flex items-start gap-4 group"
                 >
-                  <div className="w-10 h-10 bg-[#00A3FF]/10 rounded flex items-center justify-center flex-shrink-0 group-hover:bg-[#00A3FF]/20 transition-colors">
+                  <div className="w-10 h-10 bg-[#00A3FF]/10 rounded flex items-center justify-center flex-shrink-0 group-hover:bg-[#00A3FF]/20 transition-colors text-[#00A3FF]">
                     <InstagramIcon size={20} />
                   </div>
                   <div>
@@ -213,8 +237,8 @@ export default function ContactPage() {
                 className="text-[#E8E8E8] text-sm leading-relaxed mb-4"
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
               >
-                Prefer to skip the form? Just message us directly on WhatsApp — we&apos;ll get back to
-                you quickly with availability and pricing.
+                Prefer a faster response? Message us directly on WhatsApp and we&apos;ll get back
+                to you straight away.
               </p>
               <a
                 href={`${WHATSAPP_BASE}?text=${encodeURIComponent("Hi UrbanShine, I'd like to book a valet.")}`}
@@ -229,127 +253,179 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* RIGHT: Quick quote form */}
+          {/* RIGHT: Quote form */}
           <div>
             <h2 className="text-3xl font-bold uppercase tracking-tight text-white mb-8">
               Quick Quote
             </h2>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
-              <div>
-                <label htmlFor="name" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                  Your Name *
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  value={form.name}
-                  onChange={(e) => field("name", e.target.value)}
-                  placeholder="John Smith"
-                  className={inputClass}
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                  autoComplete="name"
-                />
-                {errors.name && <p className={errorClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>{errors.name}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="phone" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                  Phone Number *
-                </label>
-                <input
-                  id="phone"
-                  type="tel"
-                  value={form.phone}
-                  onChange={(e) => field("phone", e.target.value)}
-                  placeholder="07700 000000"
-                  className={inputClass}
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                  autoComplete="tel"
-                />
-                {errors.phone && <p className={errorClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>{errors.phone}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="vehicle" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                  Vehicle Make &amp; Model *
-                </label>
-                <input
-                  id="vehicle"
-                  type="text"
-                  value={form.vehicle}
-                  onChange={(e) => field("vehicle", e.target.value)}
-                  placeholder="e.g. BMW 3 Series, VW Golf"
-                  className={inputClass}
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                />
-                {errors.vehicle && <p className={errorClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>{errors.vehicle}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="service" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                  Service Interested In *
-                </label>
-                <select
-                  id="service"
-                  value={form.service}
-                  onChange={(e) => field("service", e.target.value)}
-                  className={`${inputClass} appearance-none`}
+            {submitted ? (
+              /* ── SUCCESS STATE ── */
+              <div className="flex flex-col items-center text-center gap-6 py-12 bg-[#111111] border border-[#1A1A1A] rounded p-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#00A3FF]/10 rounded-full">
+                  <CheckCircle2 className="text-[#00A3FF]" size={36} strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h3 className="text-white text-2xl font-bold uppercase tracking-wide mb-2">
+                    Message Sent
+                  </h3>
+                  <p
+                    className="text-[#A0A0A0] text-sm leading-relaxed"
+                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                  >
+                    Thanks, {form.name.split(" ")[0]}! We&apos;ll be in touch shortly to confirm your booking.
+                  </p>
+                </div>
+                <button
+                  onClick={handleReset}
+                  className="border border-[#00A3FF]/40 text-[#00A3FF] font-semibold tracking-widest uppercase px-8 py-3 rounded text-sm hover:border-[#00A3FF] hover:bg-[#00A3FF]/10 transition-all duration-200"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  <option value="" disabled>Select a service...</option>
-                  {serviceOptions.map((s) => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
-                {errors.service && <p className={errorClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>{errors.service}</p>}
+                  Submit another enquiry
+                </button>
               </div>
-
-              <div>
-                <label htmlFor="date" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                  Preferred Date
-                </label>
-                <input
-                  id="date"
-                  type="date"
-                  value={form.date}
-                  onChange={(e) => field("date", e.target.value)}
-                  className={`${inputClass} [color-scheme:dark]`}
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-                  Additional Notes
-                </label>
-                <textarea
-                  id="message"
-                  rows={4}
-                  value={form.message}
-                  onChange={(e) => field("message", e.target.value)}
-                  placeholder="Any extra info — pet hair, specific stains, parking notes, etc."
-                  className={`${inputClass} resize-none`}
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="flex items-center justify-center gap-2 bg-[#00A3FF] text-white font-semibold tracking-widest uppercase px-8 py-4 rounded text-sm transition-all duration-200 hover:bg-[#0077FF] hover:shadow-[0_0_24px_rgba(0,163,255,0.5)] min-h-[52px]"
-                style={{ fontFamily: "var(--font-inter), sans-serif" }}
+            ) : (
+              /* ── FORM ── */
+              /* data-netlify captures submissions — configure email alerts in your Netlify dashboard under Forms */
+              <form
+                name="contact"
+                data-netlify="true"
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-5"
+                noValidate
               >
-                <Send size={16} />
-                Send via WhatsApp
-              </button>
+                <input type="hidden" name="form-name" value="contact" />
 
-              <p
-                className="text-[#606060] text-xs text-center"
-                style={{ fontFamily: "var(--font-inter), sans-serif" }}
-              >
-                Submitting opens WhatsApp with your details pre-filled. No data is stored.
-              </p>
-            </form>
+                <div>
+                  <label htmlFor="name" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                    Your Name *
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value={form.name}
+                    onChange={(e) => field("name", e.target.value)}
+                    placeholder="John Smith"
+                    className={inputClass}
+                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                    autoComplete="name"
+                  />
+                  {errors.name && <p className={errorClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>{errors.name}</p>}
+                </div>
+
+                <div>
+                  <label htmlFor="phone" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                    Phone Number *
+                  </label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => field("phone", e.target.value)}
+                    placeholder="07700 000000"
+                    className={inputClass}
+                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                    autoComplete="tel"
+                  />
+                  {errors.phone && <p className={errorClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>{errors.phone}</p>}
+                </div>
+
+                <div>
+                  <label htmlFor="vehicle" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                    Vehicle Make &amp; Model *
+                  </label>
+                  <input
+                    id="vehicle"
+                    name="vehicle"
+                    type="text"
+                    value={form.vehicle}
+                    onChange={(e) => field("vehicle", e.target.value)}
+                    placeholder="e.g. BMW 3 Series, VW Golf"
+                    className={inputClass}
+                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                  />
+                  {errors.vehicle && <p className={errorClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>{errors.vehicle}</p>}
+                </div>
+
+                <div>
+                  <label htmlFor="service" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                    Service Interested In *
+                  </label>
+                  <select
+                    id="service"
+                    name="service"
+                    value={form.service}
+                    onChange={(e) => field("service", e.target.value)}
+                    className={`${inputClass} appearance-none`}
+                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                  >
+                    <option value="" disabled>Select a service...</option>
+                    {serviceOptions.map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                  {errors.service && <p className={errorClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>{errors.service}</p>}
+                </div>
+
+                <div>
+                  <label htmlFor="date" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                    Preferred Date
+                  </label>
+                  <input
+                    id="date"
+                    name="date"
+                    type="date"
+                    value={form.date}
+                    onChange={(e) => field("date", e.target.value)}
+                    className={`${inputClass} [color-scheme:dark]`}
+                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="message" className={labelClass} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
+                    Additional Notes
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    value={form.message}
+                    onChange={(e) => field("message", e.target.value)}
+                    placeholder="Any extra info — pet hair, specific stains, parking notes, etc."
+                    className={`${inputClass} resize-none`}
+                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                  />
+                </div>
+
+                {submitError && (
+                  <p
+                    className="text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded px-4 py-3"
+                    style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                  >
+                    {submitError}
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="flex items-center justify-center gap-2 bg-[#00A3FF] text-white font-semibold tracking-widest uppercase px-8 py-4 rounded text-sm transition-all duration-200 hover:bg-[#0077FF] hover:shadow-[0_0_24px_rgba(0,163,255,0.5)] min-h-[52px] disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                >
+                  {submitting ? (
+                    <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <Mail size={16} />
+                      Submit
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>
