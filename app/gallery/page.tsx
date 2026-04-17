@@ -4,47 +4,34 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
-type Category = "all" | "before-after";
-
 interface GalleryImage {
   src: string;
   alt: string;
-  category: Exclude<Category, "all">;
 }
 
 const images: GalleryImage[] = [
   {
     src: "/SnapInsta.to_651016692_18060343931433626_3608304060369942912_n.jpg",
     alt: "Before and after interior clean — messy boot transformed to clean dashboard",
-    category: "before-after",
   },
   {
     src: "/SnapInsta.to_669377469_18066803840433626_5222591806774433791_n.jpg",
     alt: "Before and after — dirty seat interior to gleaming Audi A1 exterior",
-    category: "before-after",
   },
   {
     src: "/SnapInsta.to_669807446_18067493795433626_1570589152011660557_n.jpg",
     alt: "Mercedes AMG exterior shine and spotless leather interior after full valet",
-    category: "before-after",
   },
   {
     src: "/SnapInsta.to_670390646_18067645703433626_4556063835841186076_n.jpg",
     alt: "Toyota Hilux before, during foam wash, and after — full exterior clean",
-    category: "before-after",
   },
 ];
 
-const filters: { label: string; value: Category }[] = [
-  { label: "All", value: "all" },
-  { label: "Before & After", value: "before-after" },
-];
-
 export default function GalleryPage() {
-  const [activeFilter, setActiveFilter] = useState<Category>("all");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const filtered = activeFilter === "all" ? images : images.filter((img) => img.category === activeFilter);
+  const filtered = images;
 
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
 
@@ -92,28 +79,8 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* ── FILTER TABS ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
-        <div className="flex flex-wrap gap-2 justify-center">
-          {filters.map(({ label, value }) => (
-            <button
-              key={value}
-              onClick={() => setActiveFilter(value)}
-              className={`px-6 py-2 rounded text-sm font-semibold tracking-widest uppercase transition-all duration-200 ${
-                activeFilter === value
-                  ? "bg-[#00A3FF] text-white shadow-[0_0_16px_rgba(0,163,255,0.4)]"
-                  : "border border-[#333] text-[#A0A0A0] hover:border-[#00A3FF] hover:text-white"
-              }`}
-              style={{ fontFamily: "var(--font-inter), sans-serif" }}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </section>
-
       {/* ── IMAGE GRID ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {filtered.map((img, idx) => (
             <button

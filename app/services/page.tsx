@@ -191,29 +191,14 @@ export default function ServicesPage() {
                 ))}
               </ul>
 
-              <div className="flex gap-3">
-                <a
-                  href={`${WHATSAPP_BASE}?text=${encodeURIComponent(pkg.msg)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex-1 block text-center font-semibold tracking-widest uppercase px-4 py-3 rounded text-sm transition-all duration-200 ${
-                    pkg.highlight
-                      ? "bg-[#00A3FF] text-white hover:bg-[#0077FF] hover:shadow-[0_0_20px_rgba(0,163,255,0.5)]"
-                      : "border border-[#00A3FF] text-[#00A3FF] hover:bg-[#00A3FF]/10"
-                  }`}
-                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
-                >
-                  Book This
-                </a>
-                <AddToCartButton product={{
-                  id: pkg.id,
-                  name: pkg.name,
-                  description: pkg.tagline,
-                  price: pkg.priceAmount,
-                  imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
-                  unit: "1 booking",
-                }} />
-              </div>
+              <AddToCartButton product={{
+                id: pkg.id,
+                name: pkg.name,
+                description: pkg.tagline,
+                price: pkg.priceAmount,
+                imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
+                unit: "1 booking",
+              }} fullWidth />
             </div>
           ))}
         </div>

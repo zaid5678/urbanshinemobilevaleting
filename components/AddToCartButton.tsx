@@ -6,7 +6,7 @@ import { useCart, type CartItem } from "./CartContext";
 
 type Product = Omit<CartItem, "quantity">;
 
-export default function AddToCartButton({ product }: { product: Product }) {
+export default function AddToCartButton({ product, fullWidth }: { product: Product; fullWidth?: boolean }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
 
@@ -19,7 +19,9 @@ export default function AddToCartButton({ product }: { product: Product }) {
   return (
     <button
       onClick={handleAdd}
-      className={`flex items-center gap-1.5 text-xs font-semibold tracking-widest uppercase px-4 py-2 rounded transition-all duration-200 min-h-[36px] min-w-[80px] justify-center ${
+      className={`flex items-center gap-2 font-semibold tracking-widest uppercase rounded transition-all duration-200 justify-center ${
+        fullWidth ? "w-full px-6 py-3 text-sm min-h-[48px]" : "text-xs px-4 py-2 min-h-[36px] min-w-[80px]"
+      } ${
         added
           ? "bg-green-600/20 text-green-400 border border-green-600/40"
           : "bg-[#00A3FF] text-white hover:bg-[#0077FF] hover:shadow-[0_0_14px_rgba(0,163,255,0.5)]"
@@ -29,13 +31,13 @@ export default function AddToCartButton({ product }: { product: Product }) {
     >
       {added ? (
         <>
-          <Check size={12} />
-          Added
+          <Check size={fullWidth ? 16 : 12} />
+          Added to Cart
         </>
       ) : (
         <>
-          <ShoppingCart size={12} />
-          Add
+          <ShoppingCart size={fullWidth ? 16 : 12} />
+          Add to Cart
         </>
       )}
     </button>
