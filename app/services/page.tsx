@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import AddToCartButton from "@/components/AddToCartButton";
 
@@ -7,8 +8,6 @@ export const metadata: Metadata = {
   description:
     "Transparent pricing, premium results. View all UrbanShine Mobile Valeting packages — from exterior washes to full premium details across London.",
 };
-
-const WHATSAPP_BASE = "https://wa.me/447716087619";
 
 // TODO: confirm pricing with client
 const packages = [
@@ -249,15 +248,13 @@ export default function ServicesPage() {
           </div>
 
           <div className="text-center mt-12">
-            <a
-              href={`${WHATSAPP_BASE}?text=${encodeURIComponent("Hi UrbanShine, I'd like to get a quote for a valet.")}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/contact"
               className="inline-block bg-[#00A3FF] text-white font-semibold tracking-widest uppercase px-10 py-4 rounded text-sm transition-all duration-200 hover:bg-[#0077FF] hover:shadow-[0_0_24px_rgba(0,163,255,0.5)]"
               style={{ fontFamily: "var(--font-inter), sans-serif" }}
             >
               Get a Custom Quote
-            </a>
+            </Link>
           </div>
         </div>
       </section>

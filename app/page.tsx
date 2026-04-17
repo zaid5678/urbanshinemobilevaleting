@@ -9,8 +9,6 @@ export const metadata: Metadata = {
     "Reliable, friendly, professional mobile car valeting across London. We come to your home or workplace — you don't lift a finger.",
 };
 
-const WHATSAPP_BASE = "https://wa.me/447716087619";
-const BOOK_MSG = encodeURIComponent("Hi UrbanShine, I'd like to book a valet.");
 
 const services = [
   {
@@ -263,17 +261,15 @@ export default function HomePage() {
             className="text-[#A0A0A0] text-lg mb-10"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Message us on WhatsApp and we&apos;ll get you booked in — fast.
+            Fill in our quick form and we&apos;ll get back to you to confirm your booking.
           </p>
-          <a
-            href={`${WHATSAPP_BASE}?text=${BOOK_MSG}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/contact"
             className="inline-block bg-[#00A3FF] text-white font-semibold tracking-widest uppercase px-10 py-5 rounded text-sm transition-all duration-200 hover:bg-[#0077FF] hover:shadow-[0_0_32px_rgba(0,163,255,0.5)]"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Book on WhatsApp
-          </a>
+            Get a Quote
+          </Link>
         </div>
       </section>
     </>

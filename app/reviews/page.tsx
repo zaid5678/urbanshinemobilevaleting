@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Clock } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -6,8 +7,6 @@ export const metadata: Metadata = {
   description:
     "Real reviews from real UrbanShine customers across London. Coming soon.",
 };
-
-const WHATSAPP_BASE = "https://wa.me/447716087619";
 
 export default function ReviewsPage() {
   return (
@@ -45,17 +44,15 @@ export default function ReviewsPage() {
           className="text-[#A0A0A0] text-base leading-relaxed max-w-md mx-auto"
           style={{ fontFamily: "var(--font-inter), sans-serif" }}
         >
-          We&apos;re collecting reviews from our customers. Check back soon — or reach out on WhatsApp if you&apos;d like to leave feedback from a recent valet.
+          We&apos;re collecting reviews from our customers. Check back soon — or get in touch if you&apos;d like to leave feedback from a recent valet.
         </p>
-        <a
-          href={`${WHATSAPP_BASE}?text=${encodeURIComponent("Hi UrbanShine, I'd like to leave a review for my recent valet.")}`}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href="/contact"
           className="inline-block mt-10 bg-[#00A3FF] text-white font-semibold tracking-widest uppercase px-8 py-4 rounded text-sm transition-all duration-200 hover:bg-[#0077FF] hover:shadow-[0_0_24px_rgba(0,163,255,0.5)]"
           style={{ fontFamily: "var(--font-inter), sans-serif" }}
         >
-          Leave a Review on WhatsApp
-        </a>
+          Get in Touch
+        </Link>
       </section>
     </>
   );

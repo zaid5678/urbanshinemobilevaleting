@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MessageCircle, MapPin, Clock } from "lucide-react";
+import { Phone, MapPin, Clock } from "lucide-react";
 
 function InstagramIcon({ size = 16 }: { size?: number }) {
   return (
@@ -22,11 +22,10 @@ function TikTokIcon({ size = 16 }: { size?: number }) {
 
 const quickLinks = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/gallery", label: "Gallery" },
   { href: "/reviews", label: "Reviews" },
-  { href: "/about", label: "About" },
-  { href: "/shop", label: "Shop" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -87,13 +86,11 @@ export default function Footer() {
             <ul className="flex flex-col gap-4">
               <li>
                 <a
-                  href="https://wa.me/447716087619"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="tel:+447716087619"
                   className="flex items-center gap-2 text-[#A0A0A0] hover:text-[#00A3FF] text-sm transition-colors duration-200"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  <MessageCircle size={16} className="flex-shrink-0" />
+                  <Phone size={16} className="flex-shrink-0" />
                   07716 087619
                 </a>
               </li>
