@@ -23,6 +23,11 @@ export const metadata: Metadata = {
     default: "UrbanShine Mobile Valeting | London's Mobile Car Cleaning Specialists",
     template: "%s | UrbanShine Mobile Valeting",
   },
+  icons: {
+    icon: "/logo.jpg",
+    shortcut: "/logo.jpg",
+    apple: "/logo.jpg",
+  },
   description:
     "Professional mobile car valeting across all London boroughs. We come to your home or workplace — reliable, friendly, and fully insured. Book on WhatsApp.",
   keywords: ["mobile car valeting London", "car cleaning London", "mobile valet", "car detailing London"],

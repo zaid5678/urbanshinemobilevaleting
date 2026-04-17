@@ -35,20 +35,20 @@ const services = [
 
 const galleryImages = [
   {
-    src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
-    alt: "Car foam wash detailing",
+    src: "/SnapInsta.to_651016692_18060343931433626_3608304060369942912_n.jpg",
+    alt: "Before and after interior clean",
   },
   {
-    src: "https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=600&q=80",
-    alt: "Dark luxury car exterior",
+    src: "/SnapInsta.to_669377469_18066803840433626_5222591806774433791_n.jpg",
+    alt: "Before and after — Audi A1 full valet",
   },
   {
-    src: "https://images.unsplash.com/photo-1622185135505-2d795003994a?w=600&q=80",
-    alt: "Car paint close-up detailing",
+    src: "/SnapInsta.to_669807446_18067493795433626_1570589152011660557_n.jpg",
+    alt: "Mercedes AMG full valet result",
   },
   {
-    src: "https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=600&q=80",
-    alt: "Professional car wash",
+    src: "/SnapInsta.to_670390646_18067645703433626_4556063835841186076_n.jpg",
+    alt: "Toyota Hilux before and after wash",
   },
 ];
 

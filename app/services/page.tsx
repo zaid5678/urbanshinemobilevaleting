@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CheckCircle2 } from "lucide-react";
+import AddToCartButton from "@/components/AddToCartButton";
 
 export const metadata: Metadata = {
   title: "Services & Pricing",
@@ -12,8 +13,10 @@ const WHATSAPP_BASE = "https://wa.me/447716087619";
 // TODO: confirm pricing with client
 const packages = [
   {
+    id: "exterior-wash",
     name: "Exterior Wash",
     price: "from £25",
+    priceAmount: 2500,
     tagline: "The quick refresh",
     includes: [
       "Full hand wash & rinse",
@@ -25,8 +28,10 @@ const packages = [
     highlight: false,
   },
   {
+    id: "mini-valet",
     name: "Mini Valet",
     price: "from £45",
+    priceAmount: 4500,
     tagline: "Inside & out",
     includes: [
       "Everything in Exterior Wash",
@@ -38,8 +43,10 @@ const packages = [
     highlight: false,
   },
   {
+    id: "full-valet",
     name: "Full Valet",
     price: "from £75",
+    priceAmount: 7500,
     tagline: "Our most popular",
     includes: [
       "Everything in Mini Valet",
@@ -52,8 +59,10 @@ const packages = [
     highlight: true,
   },
   {
+    id: "premium-detail",
     name: "Premium Detail",
     price: "from £120",
+    priceAmount: 12000,
     tagline: "The full treatment",
     includes: [
       "Everything in Full Valet",
@@ -66,8 +75,10 @@ const packages = [
     highlight: false,
   },
   {
+    id: "interior-deep-clean",
     name: "Interior Deep Clean",
     price: "from £90",
+    priceAmount: 9000,
     tagline: "For stubborn stains",
     includes: [
       "Full interior vacuum",
@@ -80,8 +91,10 @@ const packages = [
     highlight: false,
   },
   {
+    id: "van-4x4-valet",
     name: "Van / 4x4 Valet",
     price: "from £95",
+    priceAmount: 9500,
     tagline: "Larger vehicles",
     includes: [
       "Full exterior wash & dry",
@@ -178,19 +191,29 @@ export default function ServicesPage() {
                 ))}
               </ul>
 
-              <a
-                href={`${WHATSAPP_BASE}?text=${encodeURIComponent(pkg.msg)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`block text-center font-semibold tracking-widest uppercase px-6 py-3 rounded text-sm transition-all duration-200 ${
-                  pkg.highlight
-                    ? "bg-[#00A3FF] text-white hover:bg-[#0077FF] hover:shadow-[0_0_20px_rgba(0,163,255,0.5)]"
-                    : "border border-[#00A3FF] text-[#00A3FF] hover:bg-[#00A3FF]/10"
-                }`}
-                style={{ fontFamily: "var(--font-inter), sans-serif" }}
-              >
-                Book This
-              </a>
+              <div className="flex gap-3">
+                <a
+                  href={`${WHATSAPP_BASE}?text=${encodeURIComponent(pkg.msg)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex-1 block text-center font-semibold tracking-widest uppercase px-4 py-3 rounded text-sm transition-all duration-200 ${
+                    pkg.highlight
+                      ? "bg-[#00A3FF] text-white hover:bg-[#0077FF] hover:shadow-[0_0_20px_rgba(0,163,255,0.5)]"
+                      : "border border-[#00A3FF] text-[#00A3FF] hover:bg-[#00A3FF]/10"
+                  }`}
+                  style={{ fontFamily: "var(--font-inter), sans-serif" }}
+                >
+                  Book This
+                </a>
+                <AddToCartButton product={{
+                  id: pkg.id,
+                  name: pkg.name,
+                  description: pkg.tagline,
+                  price: pkg.priceAmount,
+                  imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
+                  unit: "1 booking",
+                }} />
+              </div>
             </div>
           ))}
         </div>

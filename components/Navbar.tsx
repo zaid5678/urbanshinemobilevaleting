@@ -9,11 +9,10 @@ import { useCart } from "./CartContext";
 
 const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/gallery", label: "Gallery" },
   { href: "/reviews", label: "Reviews" },
-  { href: "/about", label: "About" },
-  { href: "/shop", label: "Shop" },
 ];
 
 export default function Navbar() {
@@ -87,7 +86,7 @@ export default function Navbar() {
                 className="bg-[#00A3FF] text-white text-sm font-semibold tracking-widest uppercase px-5 py-2 rounded transition-all duration-200 hover:bg-[#0077FF] hover:shadow-[0_0_18px_rgba(0,163,255,0.5)]"
                 style={{ fontFamily: "var(--font-inter), sans-serif" }}
               >
-                Book Now
+                Contact
               </Link>
             </div>
 
@@ -139,7 +138,7 @@ export default function Navbar() {
             className="bg-[#00A3FF] text-white text-lg font-semibold tracking-widest uppercase px-10 py-4 rounded mt-4 hover:bg-[#0077FF] hover:shadow-[0_0_20px_rgba(0,163,255,0.5)] transition-all duration-200 min-h-[44px] flex items-center"
             style={{ fontFamily: "var(--font-inter), sans-serif" }}
           >
-            Book Now
+            Contact
           </Link>
         </div>
       )}
